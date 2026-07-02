@@ -1,0 +1,58 @@
+<style>
+  .davinci-wrap {
+    display: inline-block;
+    cursor: pointer;
+  }
+  .davinci-wrap img {
+    width: 320px;       /* ← adjust size here */
+    height: auto;
+    display: block;
+    transition: filter 0.15s ease;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+  }
+  .davinci-wrap:hover img {
+    filter: drop-shadow(0 24px 48px rgba(0,0,0,0.45));
+  }
+</style>
+
+<div class="davinci-wrap" id="davinciWrap">
+  <img
+    id="davinciImg"
+    src="https://res.cloudinary.com/ddrixl5ob/image/upload/v1779279747/Idle_Davinci_Gif_PS_V2_uj29jo.gif"
+    alt="DaVinci mascot"
+  />
+</div>
+
+<script>
+  (function () {
+    var IDLE_URL      = "https://res.cloudinary.com/ddrixl5ob/image/upload/v1779279747/Idle_Davinci_Gif_PS_V2_uj29jo.gif";
+    var ACTION_URL    = "https://res.cloudinary.com/ddrixl5ob/image/upload/v1779280417/Action_Davinci_Gif_PS_V2_daxw9i.gif";
+    var ACTION_DURATION_MS = 10000; // ← match your action comp duration in milliseconds
+
+    var img     = document.getElementById("davinciImg");
+    var wrap    = document.getElementById("davinciWrap");
+    var playing = false;
+    var timer   = null;
+
+    // Preload action GIF so there's no delay on first click
+    var preload  = new Image();
+    preload.src  = ACTION_URL;
+
+    wrap.addEventListener("click", function () {
+      if (playing) return; // ignore clicks while action is running
+      playing = true;
+
+      // Force GIF to restart from frame 1 by clearing src first
+      img.src = "";
+      img.src = ACTION_URL;
+
+      // After the action duration, switch back to idle
+      timer = setTimeout(function () {
+        img.src = "";
+        img.src = IDLE_URL;
+        playing = false;
+      }, ACTION_DURATION_MS);
+    });
+
+  })();
+</script>
