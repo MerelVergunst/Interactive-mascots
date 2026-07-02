@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Character Test — Combined Canvas</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a2fd4;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: sans-serif;
+    padding: 60px 20px;
+  }
+
+  .canvas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 60px;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .char-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .char-label {
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ===== Vorst (click, auto-reset) ===== */
+  .vorst-wrap {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+  }
+  .vorst-wrap img {
+    width: 320px;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+  .vorst-wrap:hover img {
+    transform: translateY(-4px);
+    filter: drop-shadow(0 28px 48px rgba(0,0,0,0.5));
+  }
+  .vorst-wrap:active img {
+    transform: translateY(2px) scale(0.98);
+  }
+
+  /* ===== Heavens Ride (hover) ===== */
+  .heavensride-wrap {
+    display: inline-block;
+    cursor: pointer;
+  }
+  .heavensride-wrap img {
+    width: 320px;
+    height: auto;
+    display: block;
+    transition: filter 0.15s ease;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+  }
+  .heavensride-wrap:hover img {
+    filter: drop-shadow(0 24px 48px rgba(0,0,0,0.45));
+  }
+
+  /* ===== DaVinci (click, auto-reset) ===== */
+  .davinci-wrap {
+    display: inline-block;
+    cursor: pointer;
+  }
+  .davinci-wrap img {
+    width: 320px;
+    height: auto;
+    display: block;
+    transition: filter 0.15s ease;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+  }
+  .davinci-wrap:hover img {
+    filter: drop-shadow(0 24px 48px rgba(0,0,0,0.45));
+  }
+</style>
+</head>
+<body>
+
+<div class="canvas">
+
+  <!-- ===== Vorst ===== -->
+  <div class="char-col">
+    <div class="vorst-wrap" id="vorstWrap">
+      <img
+        id="vorstImg"
+        src="https://res.cloudinary.com/ddrixl5ob/image/upload/q_auto/f_auto/v1779179791/stichting-Vorst-Idle_g5udht.gif"
+        alt="Vorst character"
+      />
+    </div>
+    <p class="char-label">Vorst — click to whistle</p>
+  </div>
+
+  <!-- ===== Heavens Ride ===== -->
+  <div class="char-col">
+    <div class="heavensride-wrap" id="heavensrideWrap">
+      <img
+        id="heavensrideImg"
+        src="https://res.cloudinary.com/ddrixl5ob/image/upload/v1779183868/Heavens_Ride_Idle_fuvais.gif"
+        alt="Heavens Ride karakter"
+      />
+    </div>
+    <p class="char-label">Heavens Ride — hover</p>
+  </div>
+
+  <!-- ===== DaVinci ===== -->
+  <div class="char-col">
+    <div class="davinci-wrap" id="davinciWrap">
+      <img
+        id="davinciImg"
+        src="https://res.cloudinary.com/ddrixl5ob/image/upload/v1779279747/Idle_Davinci_Gif_PS_V2_uj29jo.gif"
+        alt="DaVinci mascot"
+      />
+    </div>
+    <p class="char-label">DaVinci — click for action</p>
+  </div>
+
+</div>
+
+<script>
+  /* ===================== VORST — click, auto-reset ===================== */
+  (function () {
+    var IDLE_SRC    = "https://res.cloudinary.com/ddrixl5ob/image/upload/q_auto/f_auto/v1779179791/stichting-Vorst-Idle_g5udht.gif";
+    var WHISTLE_SRC = "https://res.cloudinary.com/ddrixl5ob/image/upload/q_auto/f_auto/v1779179791/stichting-Vorst-blowing-whistle_q2wb5p.gif";
+    var WHISTLE_DURATION_MS = 3800;
+
+    var img       = document.getElementById("vorstImg");
+    var wrap      = document.getElementById("vorstWrap");
+    var whistling = false;
+
+    var preload = new Image();
+    preload.src = WHISTLE_SRC;
+
+    wrap.addEventListener("click", function () {
+      if (whistling) return;
+      whistling = true;
+      img.src = WHISTLE_SRC;
+
+      setTimeout(function () {
+        img.src   = IDLE_SRC;
+        whistling = false;
+      }, WHISTLE_DURATION_MS);
+    });
+  })();
+
+  /* ===================== HEAVENS RIDE — hover ===================== */
+  (function () {
+    var IDLE_URL  = "https://res.cloudinary.com/ddrixl5ob/image/upload/v1779183868/Heavens_Ride_Idle_fuvais.gif";
+    var HOVER_URL = "https://res.cloudinary.com/ddrixl5ob/image/upload/v1779183868/Heavens_Ride_Animatie_rn7m7p.gif";
+
+    var img  = document.getElementById("heavensrideImg");
+    var wrap = document.getElementById("heavensrideWrap");
+
+    var preload = new Image();
+    preload.src = HOVER_URL;
+
+    wrap.addEventListener("mouseenter", function () {
+      img.src = HOVER_URL;
+    });
+    wrap.addEventListener("mouseleave", function () {
+      img.src = IDLE_URL;
+    });
+  })();
+
+  /* ===================== DAVINCI — click, auto-reset ===================== */
+  (function () {
+    var IDLE_URL   = "https://res.cloudinary.com/ddrixl5ob/image/upload/v1779279747/Idle_Davinci_Gif_PS_V2_uj29jo.gif";
+    var ACTION_URL = "https://res.cloudinary.com/ddrixl5ob/image/upload/v1779280417/Action_Davinci_Gif_PS_V2_daxw9i.gif";
+    var ACTION_DURATION_MS = 10000;
+
+    var img     = document.getElementById("davinciImg");
+    var wrap    = document.getElementById("davinciWrap");
+    var playing = false;
+
+    var preload = new Image();
+    preload.src = ACTION_URL;
+
+    wrap.addEventListener("click", function () {
+      if (playing) return;
+      playing = true;
+
+      img.src = "";
+      img.src = ACTION_URL;
+
+      setTimeout(function () {
+        img.src  = "";
+        img.src  = IDLE_URL;
+        playing  = false;
+      }, ACTION_DURATION_MS);
+    });
+  })();
+</script>
+
+</body>
+</html>
